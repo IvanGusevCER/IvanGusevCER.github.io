@@ -11,29 +11,47 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
     
     <style>
+        /* =========================================
+           БАЗОВЫЕ НАСТРОЙКИ И ПЕРЕМЕННЫЕ ЦВЕТОВ
+        ========================================= */
         :root {
-            --bg-color: #0a0a0a;
-            --text-main: #ffffff;
-            --text-muted: #888888;
-            --accent: #FFD700;
+            --bg-color: #0a0a0a;     /* Основной темный фон */
+            --text-main: #ffffff;    /* Основной цвет текста (белый) */
+            --text-muted: #888888;   /* Приглушенный текст (серый) */
+            --accent: #FFD700;       /* Акцентный цвет (золотой) */
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        /* Сброс стандартных отступов для всех элементов */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            scroll-behavior: smooth; /* Плавная прокрутка к якорям на странице */
+        }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
             font-family: 'Montserrat', sans-serif;
-            overflow-x: hidden;
+            overflow-x: hidden; /* Запрет горизонтальной прокрутки */
         }
 
-        #particles-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        /* Холст для звездного фона */
+        #particles-canvas { 
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%; 
+            z-index: 0; 
+            pointer-events: none; /* Чтобы клики проходили сквозь фон */
+        }
 
-        /* HEADER */
+        /* =========================================
+           ШАПКА САЙТА (HEADER)
+        ========================================= */
         .site-header {
             position: fixed; top: 0; left: 0; width: 100%; padding: 0.5rem 5%;
             display: flex; justify-content: space-between; align-items: center; z-index: 50;
-            background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(15px);
+            background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(15px); /* Эффект матового стекла */
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             transition: padding 0.3s ease;
         }
@@ -42,6 +60,7 @@
         .header-brand img { height: 55px; width: auto; }
         .header-brand span { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.3rem; letter-spacing: 1px; }
         
+        /* Навигация и переключатель языков */
         .header-right { display: flex; align-items: center; gap: 2.5rem; }
         .header-nav { display: flex; gap: 1.5rem; }
         .header-nav a { 
@@ -49,18 +68,23 @@
             text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s ease; 
         }
         .header-nav a:hover { color: var(--accent); }
+        
+        /* Анимация подчеркивания ссылок в меню */
         .header-nav a::after {
             content: ''; position: absolute; width: 0; height: 1px; 
             bottom: -4px; left: 0; background-color: var(--accent); transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .header-nav a:hover::after { width: 100%; }
 
+        /* Кнопки переключения языка */
         .lang-switcher { display: flex; gap: 8px; border-left: 1px solid #333; padding-left: 15px; }
         .lang-btn { background: none; border: none; color: var(--text-muted); font-size: 0.75rem; font-weight: 700; cursor: pointer; transition: color 0.3s ease; }
         .lang-btn:hover { color: #fff; }
-        .lang-btn.active { color: #fff; border-bottom: 1px solid var(--accent); }
+        .lang-btn.active { color: #fff; border-bottom: 1px solid var(--accent); } /* Активный язык */
 
-        /* HERO */
+        /* =========================================
+           ГЛАВНЫЙ ЭКРАН (HERO)
+        ========================================= */
         .hero {
             position: relative; height: 100vh; display: flex; align-items: center;
             justify-content: flex-start; padding: 0 10%; overflow: hidden; z-index: 1;
@@ -73,27 +97,39 @@
         .hero-title { font-family: 'Playfair Display', serif; font-size: 4.5rem; font-weight: 900; line-height: 1; margin-bottom: 0.5rem; }
         .hero-subtitle { font-size: 1.1rem; font-weight: 500; letter-spacing: 2px; margin-bottom: 1.5rem; color: #eee; }
         .hero-services { font-size: 0.75rem; color: var(--text-muted); display: flex; gap: 1.5rem; text-transform: uppercase; letter-spacing: 1px; }
+        
+        /* Правая фотография */
         .hero-image-container { position: absolute; right: 2%; bottom: 0; height: 95vh; z-index: 1; pointer-events: none; }
         .hero-image-container img { height: 100%; object-fit: contain; transition: transform 0.2s ease-out; }
+        
+        /* Плавное растворение низа фотографии */
         .hero-image-container::after {
             content: ''; position: absolute; bottom: 0; left: 0; width: 100%;
             height: 20vh; background: linear-gradient(to top, var(--bg-color), transparent);
         }
+        
+        /* Легкое свечение на заднем фоне */
         .glow-background {
             position: absolute; top: 40%; left: 30%; width: 600px; height: 600px;
             background: radial-gradient(circle, rgba(255, 255, 255, 0.07) 0%, transparent 70%);
             transform: translate(-50%, -50%); z-index: 0;
         }
 
-        /* MARQUEE */
+        /* =========================================
+           БЕГУЩАЯ СТРОКА (MARQUEE)
+        ========================================= */
         .marquee-section { background: #0d0d0d; padding: 1rem 0; overflow: hidden; border-top: 1px solid #111; z-index: 2; position: relative; }
         .marquee-content { display: flex; animation: marquee 25s linear infinite; }
         .marquee-text { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: #222; text-transform: uppercase; padding: 0 3rem; white-space: nowrap; }
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        /* PORTFOLIO */
+        /* =========================================
+           СЕКЦИЯ ПОРТФОЛИО
+        ========================================= */
         .portfolio { padding: 8rem 10%; position: relative; z-index: 2; }
         .section-title { font-family: 'Playfair Display', serif; font-size: 3.5rem; margin-bottom: 4rem; text-align: center; }
+        
+        /* Сетка карточек проектов (3 в ряд) */
         .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; }
 
         .project-card {
@@ -101,6 +137,8 @@
             border: 1px solid #1a1a1a; display: flex; flex-direction: column; align-items: flex-start;
             transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
         }
+        
+        /* Анимация при наведении на карточку проекта */
         .project-card:hover {
             transform: translateY(-12px);
             border-color: rgba(255, 215, 0, 0.5);
@@ -110,6 +148,7 @@
         .project-card:hover h3 { color: var(--accent); }
         .project-card p { color: var(--text-muted); line-height: 1.6; margin-bottom: 2.5rem; flex-grow: 1; font-size: 0.9rem; }
 
+        /* Магнитные кнопки */
         .magnetic-btn {
             padding: 0.8rem 2.2rem; background: transparent; color: #fff;
             border: 1px solid #fff; border-radius: 0; font-family: inherit;
@@ -117,52 +156,105 @@
         }
         .magnetic-btn:hover { background: #fff; color: #000; }
 
-        /* ПОВТОРЯЮЩАЯСЯ АНИМАЦИЯ ПОЯВЛЕНИЯ */
+        /* =========================================
+           КОНТАКТЫ И ПОДВАЛ САЙТА (FOOTER)
+        ========================================= */
+        .site-footer {
+            position: relative; z-index: 2;
+            padding: 8rem 10% 3rem;
+            background: #050505;
+            border-top: 1px solid #111;
+            text-align: center;
+        }
+        .footer-content h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        /* Большая ссылка на почту */
+        .email-link {
+            font-size: 3.5rem;
+            color: var(--accent);
+            font-family: 'Playfair Display', serif;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            margin-bottom: 5rem;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
+        }
+        .email-link:hover { transform: scale(1.05); color: #fff; }
+        
+        /* Линия подчеркивания почты */
+        .email-link::after {
+            content: ''; position: absolute; width: 100%; height: 2px;
+            bottom: -8px; left: 0; background-color: currentColor;
+            transform: scaleX(0); transform-origin: right; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .email-link:hover::after { transform: scaleX(1); transform-origin: left; }
+        
+        /* Блок с копирайтом и соцсетями */
+        .footer-bottom {
+            display: flex; justify-content: space-between; align-items: center;
+            border-top: 1px solid #222; padding-top: 2rem; flex-wrap: wrap; gap: 1.5rem;
+        }
+        .socials { display: flex; gap: 2rem; }
+        .socials a {
+            color: #fff; text-decoration: none; text-transform: uppercase;
+            font-size: 0.8rem; letter-spacing: 1px; transition: color 0.3s ease;
+        }
+        .socials a:hover { color: var(--accent); }
+        .copyright { color: var(--text-muted); font-size: 0.8rem; letter-spacing: 1px; }
+
+        /* =========================================
+           АНИМАЦИИ ПРИ СКРОЛЛЕ
+        ========================================= */
         .scroll-anim { 
             opacity: 0; 
             transform: translateY(50px); 
             transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); 
         }
+        /* Этот класс добавляется через JS, когда элемент виден на экране */
         .scroll-anim.is-visible { 
             opacity: 1; 
             transform: translateY(0); 
         }
 
-        /* MODAL & INNER PROJECT STYLES */
+        /* =========================================
+           МОДАЛЬНОЕ ОКНО (POPUP С ПРОЕКТАМИ)
+        ========================================= */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 100; visibility: hidden; opacity: 0; transition: opacity 0.4s ease, visibility 0.4s ease;
+            background: rgba(0,0,0,0.95); z-index: 100; visibility: hidden; opacity: 0; 
+            transition: opacity 0.4s ease, visibility 0.4s ease;
             display: flex; align-items: center; justify-content: center; backdrop-filter: blur(15px);
         }
         .modal-overlay.active { visibility: visible; opacity: 1; }
+        
         .modal-content {
             width: 90%; max-width: 1200px; height: 85vh; background: #0f0f0f;
             padding: 4rem; overflow-y: auto; border: 1px solid #222; position: relative;
             transform: scale(0.95) translateY(20px); opacity: 0; transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
         }
-        .modal-overlay.active .modal-content {
-            transform: scale(1) translateY(0); opacity: 1;
-        }
+        .modal-overlay.active .modal-content { transform: scale(1) translateY(0); opacity: 1; }
 
-        /* Анимация крестика закрытия */
+        /* Крестик закрытия окна */
         #closeModal {
             position: absolute; top: 2rem; right: 2rem; background: none; border: none; 
             color: #fff; font-size: 2.5rem; cursor: pointer; z-index: 10;
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
             transform-origin: center;
         }
-        #closeModal:hover {
-            transform: rotate(90deg) scale(1.1);
-            color: var(--accent);
-        }
+        #closeModal:hover { transform: rotate(90deg) scale(1.1); color: var(--accent); }
 
-        /* Стили для контента внутри модальных окон */
+        /* Внутренние стили для текста в модальном окне */
         .project-img { width: 100%; height: auto; margin-bottom: 2.5rem; border-radius: 4px; border: 1px solid #333; }
         .info-block { margin-bottom: 2rem; background: rgba(255,255,255,0.02); padding: 2rem; border-left: 4px solid var(--accent); transition: background 0.3s ease; }
         .info-block:hover { background: rgba(255,255,255,0.04); }
         .info-block h4 { font-family: 'Montserrat', sans-serif; color: #fff; margin-bottom: 1rem; text-transform: uppercase; font-size: 1rem; letter-spacing: 1px; }
         .info-block p { color: var(--text-muted); line-height: 1.8; font-size: 0.95rem; }
         
+        /* Кнопки действий внутри проекта (перейти на сайт, скачать pdf) */
         .modal-actions { display: flex; gap: 1.5rem; margin-top: 3rem; flex-wrap: wrap; }
         .action-btn { 
             padding: 1rem 2.5rem; background: transparent; color: #fff; text-decoration: none; 
@@ -172,7 +264,7 @@
         .action-btn.primary { background: var(--accent); border-color: var(--accent); color: #000; }
         .action-btn.primary:hover { background: transparent; color: var(--accent); box-shadow: 0 5px 15px rgba(255,215,0,0.15); }
 
-        /* СТИЛИ ДЛЯ ВНУТРЕННЕЙ СЕТКИ ПРОЕКТОВ (LAB) */
+        /* Внутренняя сетка для мини-проектов (Web Lab) */
         .lab-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
         .lab-item { 
             background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); 
@@ -195,18 +287,26 @@
         }
         .lab-item a:hover::after { width: 100%; }
 
+        /* =========================================
+           АДАПТИВНОСТЬ (МЕДИА-ЗАПРОСЫ)
+        ========================================= */
+        /* Планшеты и маленькие ноутбуки */
         @media (max-width: 1100px) {
             .hero-content { width: 100%; }
             .logo-main { width: 450px; }
-            .hero-image-container { opacity: 0.3; }
-            .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+            .hero-image-container { opacity: 0.3; } /* Делаем фото прозрачнее, чтобы не мешало тексту */
+            .portfolio-grid { grid-template-columns: repeat(2, 1fr); } /* 2 колонки вместо 3 */
         }
+        
+        /* Мобильные телефоны */
         @media (max-width: 768px) {
-            .portfolio-grid { grid-template-columns: 1fr; }
+            .portfolio-grid { grid-template-columns: 1fr; } /* 1 колонка */
             .hero-title { font-size: 3rem; }
             .modal-content { padding: 2rem; width: 95%; }
             .modal-actions { flex-direction: column; }
             #closeModal { top: 1rem; right: 1rem; font-size: 2rem; }
+            .email-link { font-size: 2rem; }
+            .footer-bottom { flex-direction: column; gap: 1.5rem; }
         }
     </style>
 </head>
@@ -282,6 +382,21 @@
         </div>
     </section>
 
+    <footer class="site-footer" id="contacts">
+        <div class="footer-content scroll-anim">
+            <h2 data-i18n="footer_title">Готовы обсудить проект?</h2>
+            <a href="mailto:ivan.gusev@ivkhk.ee" class="email-link">ivan.gusev@ivkhk.ee</a>
+            
+            <div class="footer-bottom">
+                <div class="socials">
+                    <a href="https://discordapp.com/users/803695899422359633" target="_blank">Discord</a>
+                    <a href="https://github.com/IvanGusevCER" target="_blank">GitHub</a>
+                </div>
+                <p class="copyright" data-i18n="footer_copy">© 2026 CERBER. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
     <div class="modal-overlay" id="projectModal">
         <div class="modal-content">
             <button id="closeModal">&times;</button>
@@ -290,6 +405,9 @@
     </div>
 
     <script>
+        // ========================================================
+        // 1. БАЗА ДАННЫХ ПЕРЕВОДОВ (МУЛЬТИЯЗЫЧНОСТЬ)
+        // ========================================================
         const translations = {
             ru: {
                 nav_home: "Главная", nav_portfolio: "Работы", nav_contacts: "Контакты", hero_subtitle: "ЦИФРОВОЕ РЕМЕСЛО И АЙДЕНТИКА",
@@ -314,7 +432,10 @@
                 lab_6_t: "Web Graphic Tips", lab_6_d: "Шоукейс из 20 страниц, демонстрирующий различные графические возможности веба.",
                 lab_7_t: "Mario Platformer", lab_7_d: "Браузерная игра-платформер в стиле классического Марио с физикой и препятствиями.",
                 lab_8_t: "Casual Web Game", lab_8_d: "Классическая браузерная игра для демонстрации логики JavaScript.",
-                lab_9_t: "Sand Box", lab_9_d: "Песочница для безопасного тестирования механик и визуальных стилей."
+                lab_9_t: "Sand Box", lab_9_d: "Песочница для безопасного тестирования механик и визуальных стилей.",
+                
+                footer_title: "Готовы обсудить проект?",
+                footer_copy: "© 2026 CERBER. Все права защищены."
             },
             en: {
                 nav_home: "Home", nav_portfolio: "Works", nav_contacts: "Contact", hero_subtitle: "DIGITAL CRAFT & VISUAL IDENTITY",
@@ -339,7 +460,10 @@
                 lab_6_t: "Web Graphic Tips", lab_6_d: "Showcase of 20 pages demonstrating various web graphics capabilities.",
                 lab_7_t: "Mario Platformer", lab_7_d: "Browser-based platformer game inspired by Mario with physics.",
                 lab_8_t: "Casual Web Game", lab_8_d: "Classic browser game demonstrating JavaScript logic.",
-                lab_9_t: "Sand Box", lab_9_d: "Sandbox environment for web experiments and testing."
+                lab_9_t: "Sand Box", lab_9_d: "Sandbox environment for web experiments and testing.",
+                
+                footer_title: "Ready to discuss a project?",
+                footer_copy: "© 2026 CERBER. All rights reserved."
             },
             et: {
                 nav_home: "Avaleht", nav_portfolio: "Portfoolio", nav_contacts: "Kontakt", hero_subtitle: "DIGITAALNE KÄSITÖÖ JA VISUAALNE IDENTITEET",
@@ -364,10 +488,16 @@
                 lab_6_t: "Web Graphic Tips", lab_6_d: "20-leheküljeline kataloog veebigraafika võimaluste demonstreerimiseks.",
                 lab_7_t: "Mario Platformer", lab_7_d: "Klassikalisest Mariost inspireeritud brauseripõhine platvormimäng.",
                 lab_8_t: "Casual Web Game", lab_8_d: "Klassikaline veebimäng JavaScripti loogika demonstreerimiseks.",
-                lab_9_t: "Sand Box", lab_9_d: "Liivakast veebieksperimentide ja ideede testimiseks."
+                lab_9_t: "Sand Box", lab_9_d: "Liivakast veebieksperimentide ja ideede testimiseks.",
+                
+                footer_title: "Oled valmis projekti arutama?",
+                footer_copy: "© 2026 CERBER. Kõik õigused kaitstud."
             }
         };
 
+        // ========================================================
+        // 2. БАЗА ДАННЫХ ПРОЕКТОВ (HTML-код для модальных окон)
+        // ========================================================
         const projectsData = {
             discord: `
                 <h2 style="font-family:'Playfair Display'; font-size:3.5rem; margin-bottom:2rem;" data-i18n="proj_discord_title">Discord Community Hub</h2>
@@ -416,71 +546,103 @@
             `
         };
 
-        // Логика языков
+        // ========================================================
+        // 3. ЛОГИКА ПЕРЕКЛЮЧЕНИЯ ЯЗЫКОВ
+        // ========================================================
+        
+        // Функция проходит по всем элементам с атрибутом data-i18n и меняет их текст
         function updateTexts(lang) {
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if(translations[lang][key]) el.textContent = translations[lang][key];
             });
         }
+        
+        // Слушаем клики по кнопкам языков (RU, EN, ET)
         document.querySelectorAll('.lang-btn').forEach(btn => {
             btn.addEventListener('click', () => {
+                // Убираем подсветку со старой кнопки и даем новой
                 document.querySelector('.lang-btn.active').classList.remove('active');
                 btn.classList.add('active');
+                // Запускаем обновление текста
                 updateTexts(btn.getAttribute('data-lang'));
             });
         });
 
-        // ИЗМЕНЕННАЯ АНИМАЦИЯ ПРИ СКРОЛЛЕ (срабатывает каждый раз)
+        // ========================================================
+        // 4. АНИМАЦИЯ ПОЯВЛЕНИЯ ЭЛЕМЕНТОВ ПРИ ПРОКРУТКЕ
+        // ========================================================
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => { 
+                // Если элемент попадает в зону видимости (экран), добавляем класс для анимации
                 if (entry.isIntersecting) {
                     entry.target.classList.add('is-visible'); 
                 } else {
-                    entry.target.classList.remove('is-visible'); // Убираем класс, когда элемент уходит с экрана
+                    // Убираем класс, если элемент ушел, чтобы анимация повторялась снова
+                    entry.target.classList.remove('is-visible');
                 }
             });
-        }, { threshold: 0.1 });
+        }, { threshold: 0.1 }); // 0.1 значит, что анимация начнется, когда 10% элемента будет видно
+
+        // Применяем обсервер ко всем элементам с классом scroll-anim
         document.querySelectorAll('.scroll-anim').forEach(el => observer.observe(el));
 
-        // Магнитные кнопки
+        // ========================================================
+        // 5. ЭФФЕКТ "МАГНИТНЫХ" КНОПОК
+        // ========================================================
         document.querySelectorAll('.magnetic-btn').forEach(btn => {
             btn.addEventListener('mousemove', (e) => {
                 const rect = btn.getBoundingClientRect();
+                // Вычисляем позицию мыши относительно центра кнопки
                 const x = (e.clientX - rect.left - rect.width / 2) * 0.4;
                 const y = (e.clientY - rect.top - rect.height / 2) * 0.4;
+                // Сдвигаем кнопку
                 btn.style.transform = `translate(${x}px, ${y}px)`;
             });
+            // Возвращаем на место, когда курсор уходит
             btn.addEventListener('mouseleave', () => btn.style.transform = 'translate(0,0)');
         });
 
-        // Модалка
+        // ========================================================
+        // 6. ЛОГИКА МОДАЛЬНЫХ ОКОН (ПРОСМОТР ПРОЕКТОВ)
+        // ========================================================
         const modal = document.getElementById('projectModal');
+        
+        // Открытие проекта
         document.querySelectorAll('.open-modal').forEach(btn => {
             btn.addEventListener('click', () => {
-                const id = btn.dataset.project;
+                const id = btn.dataset.project; // Получаем ID проекта (discord, fox, lab)
+                // Вставляем HTML код проекта в окно
                 document.getElementById('modalBody').innerHTML = projectsData[id];
                 
+                // Переводим только что добавленный текст на текущий активный язык
                 const currentLang = document.querySelector('.lang-btn.active').getAttribute('data-lang');
                 updateTexts(currentLang);
 
+                // Показываем окно и блокируем прокрутку основной страницы
                 modal.classList.add('active');
                 document.body.style.overflow = 'hidden';
             });
         });
 
+        // Закрытие проекта по крестику
         document.getElementById('closeModal').onclick = () => {
             modal.classList.remove('active');
-            document.body.style.overflow = 'auto';
+            document.body.style.overflow = 'auto'; // Возвращаем прокрутку
         };
 
-        // Звезды (Canvas)
+        // ========================================================
+        // 7. АНИМАЦИЯ ЗВЕЗД НА ФОНЕ (CANVAS)
+        // ========================================================
         const canvas = document.getElementById('particles-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [];
+        
+        // Подстраиваем размер холста под экран
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.onresize = resize; resize();
 
+        // Класс, описывающий одну звезду
         class Star {
             constructor() { this.init(); }
             init() {
@@ -488,19 +650,26 @@
                 this.y = Math.random() * canvas.height;
                 this.size = Math.random() * 1.2;
                 this.opacity = 0;
-                this.step = Math.random() * 0.01 + 0.005;
+                this.step = Math.random() * 0.01 + 0.005; // Скорость мерцания
             }
             draw() {
                 this.opacity += this.step;
+                // Меняем направление мерцания
                 if (this.opacity > 1 || this.opacity < 0) this.step *= -1;
+                // Респавн звезды в новом месте
                 if (this.opacity < -0.1) this.init();
+                
                 ctx.fillStyle = `rgba(255, 215, 0, ${this.opacity})`;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
             }
         }
+        
+        // Создаем 100 звезд
         for(let i=0; i<100; i++) stars.push(new Star());
+        
+        // Запуск анимации
         function anim() {
             ctx.clearRect(0,0,canvas.width, canvas.height);
             stars.forEach(s => s.draw());
@@ -508,10 +677,13 @@
         }
         anim();
 
-        // Параллакс
+        // ========================================================
+        // 8. ПАРАЛЛАКС ДЛЯ ФОТОГРАФИИ НА ГЛАВНОМ ЭКРАНЕ
+        // ========================================================
         const heroImg = document.getElementById('parallax-img');
         document.addEventListener('mousemove', (e) => {
             if(!heroImg) return;
+            // Смещаем картинку в сторону, противоположную движению мыши
             const x = (window.innerWidth / 2 - e.pageX) / 45;
             const y = (window.innerHeight / 2 - e.pageY) / 45;
             heroImg.style.transform = `translate(${x}px, ${y}px)`;
